@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Решение теста</title>
+    <link rel="stylesheet" href="src/styles/common.css">
+    <link rel="stylesheet" href="src/styles/test.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="container">
+        <div class="logo">
+            <img src="./assets/Logo.png" alt="Логотип">
+        </div>
+    </div>
+</header>
+
+<section class="test">
+    <div class="container test-container">
+        <div class="test-pre-title" id="pre-title"></div>
+        <div class="test-progress-bar" id="progress-bar"></div>
+        <div class="test-question">
+            <div class="test-question-title" id="title"></div>
+            <div class="test-question-options" id="options"></div>
+        </div>
+        <div class="test-actions">
+            <div class="test-previous-action">
+                <button class="btn btn-transparent" disabled id="previous">Назад</button>
+            </div>
+            <div class="test-time">
+                <div class="test-time-text">Осталось времени:</div>
+                <div class="test-time-clock" id="timer"></div>
+            </div>
+            <div class="test-next-action">
+                <button class="btn btn-transparent" disabled id="next">Дальше</button>
+            </div>
+        </div>
+        <div class="pass-question">
+            <a href="javascript:void(0)" id="pass">Пропустить вопрос
+                <svg width="8" height="15" viewBox="0 0 8 15" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <rect y="15" width="15" height="8" transform="rotate(-90 0 15)" fill="url(#pattern0_102_683)"/>
+                    <defs>
+                        <pattern id="pattern0_102_683" patternContentUnits="objectBoundingBox" width="1" height="1">
+                            <use xlink:href="#image0_102_683" transform="matrix(0.00284091 0 0 0.0053267 0 -0.0113636)"/>
+                        </pattern>
+                        <image id="image0_102_683" width="352" height="192" preserveAspectRatio="none" xlink:href="data:image/png;base64,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"/>
+                    </defs>
+                </svg>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+
+<footer class="footer">
+    <span class="footer-text">«АйтилогияQuiz» © Все права защищены / <span class="footer-year">2022</span></span>
+</footer>
+<script src="src/scripts/common.js"></script>
+<script src="src/scripts/test.js"></script>
+</body>
+</html>
