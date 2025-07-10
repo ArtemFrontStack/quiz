@@ -2,11 +2,15 @@
     const Result = {
         init() {
             checkUserData();
-            const url = new URL(location.href);
-            const id = url.searchParams.get("id");
-            document.getElementById('result-scope').textContent = url.searchParams.get('score') + '/' + url.searchParams.get('total');
+            const id = sessionStorage.getItem("test-id");
+            const score = sessionStorage.getItem("score");
+            const total = sessionStorage.getItem("total");
+            const name = sessionStorage.getItem("name") || '';
+            const lastName = sessionStorage.getItem("last-name") || '';
+            document.getElementById('result-user').textContent = name + ' ' + lastName;
+            document.getElementById('result-scope').textContent = score + '/' + total;
             document.getElementById('answers-link').addEventListener('click', () => {
-                location.href = 'answers.html?id=' + id;
+                location.href = 'answers.html';
             });
         },
     }

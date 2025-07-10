@@ -15,9 +15,7 @@
             this.loadQuiz();
         },
         loadQuiz() {
-            const url = new URL(location.href);
-            const testId = url.searchParams.get("id");
-            console.log('Загружаем тест с ID:', testId);
+            const testId = sessionStorage.getItem("test-id");
             if (testId) {
                 // Загружаем вопросы теста
                 const xhr = new XMLHttpRequest();
@@ -26,7 +24,6 @@
                 if (xhr.status === 200 && xhr.responseText) {
                     try {
                         this.quiz = JSON.parse(xhr.responseText);
-                        console.log('Данные теста:', this.quiz);
                         this.loadRightAnswers(testId);
                     } catch (err) {
                         console.error('Ошибка при загрузке теста:', err);
@@ -40,7 +37,6 @@
             }
         },
         loadRightAnswers(testId) {
-            console.log('Загружаем правильные ответы для теста:', testId);
             // Загружаем правильные ответы
             const xhr = new XMLHttpRequest();
             xhr.open("GET", `http://testologia.site/get-quiz-right?id=${testId}`, false);
@@ -48,13 +44,10 @@
             if (xhr.status === 200 && xhr.responseText) {
                 try {
                     this.rightAnswerIds = JSON.parse(xhr.responseText);
-                    console.log('Правильные ID ответов с сервера:', this.rightAnswerIds);
                     // Получаем результаты пользователя из localStorage
                     this.userResult = JSON.parse(localStorage.getItem('userResult') || '[]');
-                    console.log('Результаты пользователя из localStorage:', this.userResult);
                     this.startAnswers();
                 } catch (err) {
-                    console.error('Ошибка при загрузке данных:', err);
                     location.href = 'index.html';
                 }
             } else {
@@ -98,13 +91,8 @@
             this.questionTitleElement.innerHTML = `<span>Вопрос ` + this.currentQuestionIndex + `: </span>` + activeQuestion.question;
             this.optionsElement.innerHTML = ``;
 
-            // Получаем ответ пользователя для текущего вопроса
             const userAnswer = this.userResult.find(item => +item.questionId === +activeQuestion.id);
 
-            // Отладочная информация
-            console.log('Вопрос ID:', activeQuestion.id);
-            console.log('Правильные ID ответов:', this.rightAnswerIds);
-            console.log('Ответ пользователя:', userAnswer);
 
             activeQuestion.answers.forEach((answer) => {
                 const optionElement = document.createElement("div");
@@ -119,31 +107,18 @@
                 inputElement.setAttribute('value', answer.id);
                 inputElement.setAttribute('disabled', 'disabled');
 
-                // Проверяем, является ли этот ответ правильным
                 const isRightAnswer = this.rightAnswerIds.includes(+answer.id);
 
-                // Проверяем, выбрал ли пользователь этот ответ
                 const isUserAnswer = userAnswer && +userAnswer.chosenAnswerId === +answer.id;
 
-                // Отладочная информация для каждого ответа
-                console.log('Ответ ID:', answer.id, 'Правильный:', isRightAnswer, 'Выбран пользователем:', isUserAnswer);
-
-                // Определяем класс для подсветки
-                // Подсвечиваем только ответ пользователя и правильный ответ
                 if (isUserAnswer) {
-                    // Если пользователь выбрал правильный ответ
                     if (isRightAnswer) {
                         optionElement.classList.add('correct-answer');
-                        console.log('Пользователь выбрал правильный ответ:', answer.id);
                     } else {
-                        // Если пользователь выбрал неправильный ответ
                         optionElement.classList.add('incorrect-answer');
-                        console.log('Пользователь выбрал неправильный ответ:', answer.id);
                     }
                 } else if (isRightAnswer) {
-                    // Если это правильный ответ, но пользователь его не выбрал
                     optionElement.classList.add('correct-answer');
-                    console.log('Правильный ответ (не выбран пользователем):', answer.id);
                 }
 
                 if (isUserAnswer) {

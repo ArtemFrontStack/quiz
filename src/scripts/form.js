@@ -64,11 +64,10 @@
         },
         processForm(){
             if(this.validateForm()){
-                let paramString = '';
                 this.fields.forEach(field => {
-                    paramString += (!paramString ? '?' : '&') + field.name + '=' + field.element.value;
+                    sessionStorage.setItem(field.name, field.element.value);
                 });
-                location.href = 'choice.html' + paramString;
+                location.href = 'choice.html';
             }
         }
 

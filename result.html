@@ -1,42 +1,47 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Результат теста</title>
-    <link rel="stylesheet" href="src/styles/common.css">
-    <link rel="stylesheet" href="src/styles/result.css">
-</head>
-<body>
-
-<header class="header">
-    <div class="container">
+    <link rel="stylesheet" href="src/styles/common.css" />
+    <link rel="stylesheet" href="src/styles/result.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
         <div class="logo">
-            <img src="./assets/Logo.png" alt="Логотип">
+          <img src="./assets/Logo.png" alt="Логотип" />
         </div>
-    </div>
-</header>
+      </div>
+    </header>
 
-<section class="result">
-    <div class="container result-container">
+    <section class="result">
+      <div class="container result-container">
         <div class="result-image">
-            <img src="/assets/result-image-bg.png" alt="Знаки вопросов">
+          <img src="/assets/result-image-bg.png" alt="Знаки вопросов" />
         </div>
-        <div class="big-title result-title">Ура! Ты прошёл тест! <span>Твой результат:</span></div>
-        <div class="result-scope" id="result-scope">
-            4/5
+        <div class="big-title result-title">
+          Ура,<span id="result-user"></span>!Ты прошёл тест!<span>Твой результат:</span>
         </div>
-        <a href="javascript:void(0)" id="answers-link">Посмотреть правильные ответы</a>
-    </div>
-</section>
+        <div class="result-scope" id="result-scope">4/5</div>
+        <a href="javascript:void(0)" id="answers-link"
+          >Посмотреть правильные ответы</a
+        >
+      </div>
+    </section>
 
-
-<footer class="footer">
-    <span class="footer-text">«АйтилогияQuiz» © Все права защищены / <span class="footer-year">2022</span></span>
-</footer>
-<script src="src/scripts/common.js"></script>
-<script src="src/scripts/result.js"></script>
-</body>
+    <footer class="footer">
+      <span class="footer-text"
+        >«АйтилогияQuiz» © Все права защищены /
+        <span class="footer-year">2022</span></span
+      >
+    </footer>
+    <script src="src/scripts/common.js"></script>
+    <script src="src/scripts/result.js"></script>
+  </body>
 </html>

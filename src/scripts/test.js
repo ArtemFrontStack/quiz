@@ -11,8 +11,7 @@
         userResult: [],
         init() {
             checkUserData();
-            const url = new URL(location.href);
-            const testId = url.searchParams.get("id");
+            const testId = sessionStorage.getItem("test-id");
             if (testId) {
                 const xhr = new XMLHttpRequest();
                 xhr.open("GET", `http://testologia.site/get-quiz?id=${testId}`, false);
@@ -194,11 +193,10 @@
             this.showQuestion();
         },
         complete(){
-            const url = new URL(location.href);
-            const id = url.searchParams.get("id");
-            const name = url.searchParams.get("name");
-            const lastName = url.searchParams.get("last-name");
-            const email = url.searchParams.get("email");
+            const id = sessionStorage.getItem("test-id");
+            const name = sessionStorage.getItem("name");
+            const lastName = sessionStorage.getItem("last-name");
+            const email = sessionStorage.getItem("email");
 
             // Сохраняем результаты пользователя в localStorage
             localStorage.setItem('userResult', JSON.stringify(this.userResult));
@@ -220,7 +218,9 @@
                     location.href = 'index.html';
                 }
                 if(result){
-                    location.href = 'result.html?id=' + id + '&score=' + result.score + '&total=' + result.total + '&name=' + name + '&last-name=' + lastName + '&email=' + email;
+                    sessionStorage.setItem('score', result.score);
+                    sessionStorage.setItem('total', result.total);
+                    location.href = 'result.html';
                 }
             } else {
                 location.href = 'index.html';
