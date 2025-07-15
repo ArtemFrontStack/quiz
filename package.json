@@ -1,0 +1,32 @@
+{
+  "name": "quiz",
+  "version": "1.0.0",
+  "description": "**АйтилогияQuiz** — это современное веб-приложение для проверки знаний по JavaScript. Пользователь проходит регистрацию, выбирает тему, отвечает на вопросы с таймером, видит результат и может посмотреть правильные ответы.",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server ./dist",
+    "build": "webpack",
+    "dev": "webpack serve --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArtemFrontStack/quiz.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArtemFrontStack/quiz/issues"
+  },
+  "homepage": "https://github.com/ArtemFrontStack/quiz#readme",
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "babel-loader": "^10.0.0",
+    "copy-webpack-plugin": "^13.0.0",
+    "html-webpack-plugin": "^5.6.3",
+    "http-server": "^14.1.1",
+    "webpack": "^5.100.2",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
+}

@@ -31,7 +31,6 @@
 .test-question-options {
     display: flex;
     flex-direction: column;
-    gap: 20px;
     min-height: 356px;
 }
 
@@ -40,103 +39,63 @@
     gap: 13px;
     font-size: 20px;
     line-height: 24px;
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
+
+
 
 .test-question-option label {
-    cursor: pointer;
+    cursor: not-allowed;
 }
-
 
 .test-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-
-
-.test-time {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-}
-
-.test-time-text {
-    font-size: 17px;
-    line-height: 20px;
-    color: #6933DC;
-}
-
-.test-time-clock {
-    background-image: url("../../assets/time.svg");
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    font-family: "Poppins", sans-serif;
-    justify-content: center;
-    align-items: center;
-    width: 33px;
-    height: 33px;
-    font-size: 10px;
-    color: #333333;
-}
-
-.pass-question {
-    display: flex;
-    margin-top: 14px;
-    justify-content: flex-end;
-    gap: 10px
-}
-
-.pass-question a {
-    text-decoration: none;
-    display: flex;
-    align-items: flex-end;
-}
-
-.pass-question a:hover {
-    text-decoration: underline;
-}
-
-
-.pass-question a.disabled {
-    pointer-events: none;
-    opacity: 0.5;
-    text-decoration: line-through;
-    cursor: not-allowed;
-}
-
-.pass-question a svg {
-    margin-left: 13px;
+    margin-top:25px;
 }
 
 input[type="radio"] {
     appearance: none;
     -webkit-appearance: none;
-    cursor: pointer;
+    cursor: not-allowed;
     width: 20px;
     height: 20px;
     border: 3px solid #6933dc;
     border-radius: 50%;
-
     display: grid;
     place-content: center;
 }
-input[type="radio"]::before{
-    content: "";
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    box-shadow: inset 10px 10px #6933dc;
-    transition: .2s ease transform;
-    transform: scale(0);
+
+.test-question-option.correct-answer {
+    background-color: rgba(76, 175, 80, 0.1);
+    border: 2px solid #4CAF50;
+    border-radius: 8px;
 }
 
-input[type="radio"]:checked::before {
-    transform: scale(1);
+.test-question-option.correct-answer input[type="radio"] {
+    border-color: #4CAF50;
+    background-color: #4CAF50;
 }
 
+
+
+.test-question-option.incorrect-answer {
+    background-color: rgba(244, 67, 54, 0.1);
+    border: 2px solid #F44336;
+    border-radius: 8px;
+}
+
+.test-question-option.incorrect-answer input[type="radio"] {
+    border-color: #F44336;
+    background-color: #F44336;
+}
+
+
+
+/* Стили для прогресс-бара */
 .test-progress-bar-item{
     display: flex;
     flex-direction: column;
@@ -150,11 +109,11 @@ input[type="radio"]:checked::before {
     height: 26px;
     background: #DCDCF3;
 }
+
 .test-progress-bar-item-text{
     line-height: 16px;
     margin-top: 16px;
 }
-
 
 .test-progress-bar-item:not(:last-child)::before{
     content: "";
@@ -174,7 +133,6 @@ input[type="radio"]:checked::before {
 .test-progress-bar-item.complete .test-progress-bar-item-circle,
 .test-progress-bar-item.active .test-progress-bar-item-circle{
     background: #6933dc;
-
 }
 
 .test-progress-bar-item.active::after{

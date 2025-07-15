@@ -22,7 +22,7 @@
 }
 
 .result-scope{
-    background-image: url("../../assets/result-image.png");
+    background-image: url("../assets/images/result-image.png");
     background-size: cover;
     background-position: center;
     width: 480px;
