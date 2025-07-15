@@ -157,6 +157,7 @@
 
             if(this.currentQuestionIndex > this.quiz.questions.length) {
                 location.href = 'index.html';
+                sessionStorage.clear();
                 return;
             }
 
