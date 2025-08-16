@@ -37,7 +37,15 @@
     color: #FFFFFF;
 }
 
-#answers-link{
-    font-size: 20px;
-    margin-top: 60px;
+.answers-link{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom:-90px;
+    right:0;
+    gap:13px;
+    font-size: 17px;
+    line-height: 20px;
+    color: #6933DC;
+    text-decoration: none;
 }

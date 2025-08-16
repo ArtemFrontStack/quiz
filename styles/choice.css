@@ -17,6 +17,7 @@
 
 .choice-option{
     display: flex;
+    position: relative;
     width: 583px;
     justify-content: space-between;
     background: #fff;
@@ -34,8 +35,6 @@
 
 .choice-option:hover {
     color: #6933dc;
-
-    font-weight: bold;
     font-family: 'Museo Sans Bold', sans-serif;
     border-left: 5px solid #6933dc;
 }
@@ -45,4 +44,21 @@
 }
 .choice-option:hover .choice-option-arrow {
     opacity: 1;
+}
+
+.choice-option-result {
+    text-align: center;
+    position: absolute;
+    z-index: 2;
+    right: 17px;
+    top: 16px;
+    border: 1px solid #6933dc;
+    padding: 5px;
+    font-size: 12px;
+    line-height:14px;
+    color: #6933dc;
+    background: white;
+}
+.choice-option-result div:first-child{
+    margin-bottom: 3px;;
 }

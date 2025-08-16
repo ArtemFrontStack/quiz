@@ -1,22 +1,30 @@
 <section class="test">
-  <div class="container test-container">
-    <div class="test-pre-title" id="pre-title"></div>
-    <div class="test-progress-bar" id="progress-bar"></div>
-    <div class="test-question">
-      <div class="test-question-title" id="title"></div>
-      <div class="test-question-options" id="options"></div>
+    <div class="container test-container">
+
+        <div class="test-pre-title">
+            <span>Результат прохождения теста</span>
+            <svg width="8" height="15" viewBox="0 0 8 15" fill="none" xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink">
+                <rect y="15" width="15" height="8" transform="rotate(-90 0 15)" fill="url(#pattern0_603_266)"/>
+                <defs>
+                    <pattern id="pattern0_603_266" patternContentUnits="objectBoundingBox" width="1" height="1">
+                        <use xlink:href="#image0_603_266" transform="matrix(0.00284091 0 0 0.0053267 0 -0.0113636)"/>
+                    </pattern>
+                    <image id="image0_603_266" width="352" height="192" preserveAspectRatio="none"
+                           xlink:href="data:image/png;base64,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"/>
+                </defs>
+
+            </svg>
+            <span class="test-name" id="test-name"></span>
+        </div>
+
+        <div class="pre-title">
+            <h1 class="big-title answers-title"><span>Правильные ответы</span> к тесту</h1>
+            <span class="complete-test">Тест выполнил <span id="user-info"></span></span>
+        </div>
+
+        <div class="test-question"></div>
+
     </div>
-    <div class="test-actions">
-      <div class="test-previous-action">
-        <button class="btn btn-transparent" disabled id="previous">
-          Назад
-        </button>
-      </div>
-      <div class="test-next-action">
-        <button class="btn btn-transparent" disabled id="next">
-          Дальше
-        </button>
-      </div>
     </div>
-  </div>
 </section>

@@ -1,16 +1,45 @@
-import checkUserData from '../utils/url-manager.js'
+import config from '../../config/config.js'
+import { Auth } from '../services/auth.js'
+import { CustomHTTPResponse } from '../services/custom-http.js'
+import { UrlManager } from '../utils/url-manager.js'
+import {Links} from "../utils/createLink.js";
+
 export default class Result {
 	constructor() {
-		checkUserData()
-		const id = sessionStorage.getItem('test-id')
-		const score = sessionStorage.getItem('score')
-		const total = sessionStorage.getItem('total')
-		const name = sessionStorage.getItem('name') || ''
-		const lastName = sessionStorage.getItem('last-name') || ''
-		document.getElementById('result-user').textContent = name + ' ' + lastName
-		document.getElementById('result-scope').textContent = score + '/' + total
-		document.getElementById('answers-link').addEventListener('click', () => {
-			location.href = '#/answers'
-		})
+		this.routeParams = UrlManager.getQueryParams()
+		this.containerResult = document.querySelector('.result-container')
+		this.resultScore = document.getElementById('result-scope')
+		this.init()
+	}
+
+	async init() {
+		const userInfo = Auth.getUserInfo()
+		if (!userInfo) {
+			location.href = '#/'
+		}
+		if (this.routeParams.id) {
+			try {
+				const result = await CustomHTTPResponse.request(
+					config.host +
+						'/tests/' +
+						this.routeParams.id +
+						'/result?userId=' +
+						userInfo.userId
+				)
+				if (result) {
+					if (result.error) {
+						throw new Error(result.error)
+					}
+
+					this.resultScore.textContent =
+						result.score + '/' + result.total
+					const linkAnswers = Links.defaultLink(this.routeParams.id,'answers');
+					this.containerResult.appendChild(linkAnswers);
+					return
+				}
+			} catch (error) {
+				console.error(error)
+			}
+		} 
 	}
 }

@@ -1,4 +1,7 @@
-import checkUserData from '../utils/url-manager.js'
+import config from '../../config/config.js'
+import { Auth } from '../services/auth.js'
+import { CustomHTTPResponse } from '../services/custom-http.js'
+import { UrlManager } from '../utils/url-manager.js'
 
 export default class Test {
 	constructor() {
@@ -11,23 +14,29 @@ export default class Test {
 		this.questionTitleElement = null
 		this.progressBarElement = null
 		this.userResult = []
-		checkUserData();
-		const testId = sessionStorage.getItem('test-id')
-		if (testId) {
-			const xhr = new XMLHttpRequest()
-			xhr.open('GET', `http://testologia.site/get-quiz?id=${testId}`, false)
-			xhr.send()
-			if (xhr.status === 200 && xhr.responseText) {
-				try {
-					this.quiz = JSON.parse(xhr.responseText)
-				} catch (err) {
-					location.href = '#/'
+		this.routeParams = UrlManager.getQueryParams()
+		this.interval = null;
+		this.init()
+	}
+
+	async init() {
+		if (this.routeParams.id) {
+			try {
+				const result = await CustomHTTPResponse.request(
+					config.host + '/tests/' + this.routeParams.id
+				)
+
+				if (result) {
+					if (result.error) {
+						throw new Error(result.error)
+					}
+					this.quiz = result
+					this.startQuiz()
 				}
-				this.startQuiz()
-			} else {
-				location.href = '#/'
+			} catch (error) {
+				console.error(error)
 			}
-		} else {
+		}else{
 			location.href = '#/'
 		}
 	}
@@ -51,12 +60,12 @@ export default class Test {
 		const timerElement = document.getElementById('timer')
 		let second = 59
 		timerElement.textContent = second.toString()
-		const interval = setInterval(
+		this.interval = setInterval(
 			function () {
 				second--
 				timerElement.textContent = second.toString()
 				if (second === 0) {
-					clearInterval(interval)
+					clearInterval(this.interval)
 					this.complete()
 					return
 				}
@@ -186,6 +195,7 @@ export default class Test {
 		}
 
 		if (this.currentQuestionIndex > this.quiz.questions.length) {
+			clearInterval(this.interval);
 			this.complete()
 			return
 		}
@@ -202,40 +212,28 @@ export default class Test {
 
 		this.showQuestion()
 	}
-	complete() {
-		const id = sessionStorage.getItem('test-id')
-		const name = sessionStorage.getItem('name')
-		const lastName = sessionStorage.getItem('last-name')
-		const email = sessionStorage.getItem('email')
-
-		// Сохраняем результаты пользователя в localStorage
-		localStorage.setItem('userResult', JSON.stringify(this.userResult))
-
-		const xhr = new XMLHttpRequest()
-		xhr.open('POST', `http://testologia.site/pass-quiz?id=${id}`, false)
-		xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
-		xhr.send(
-			JSON.stringify({
-				name: name,
-				lastName: lastName,
-				email: email,
-				results: this.userResult,
-			})
-		)
-		if (xhr.status === 200 && xhr.responseText) {
-			let result = null
-			try {
-				result = JSON.parse(xhr.responseText)
-			} catch (err) {
+	async complete() {
+		try {
+			const userInfo = Auth.getUserInfo()
+			if (!userInfo) {
 				location.href = '#/'
 			}
+			const result = await CustomHTTPResponse.request(
+				config.host + '/tests/' + this.routeParams.id + '/pass',
+				'POST',
+				{
+					userId: userInfo.userId,
+					results: this.userResult,
+				}
+			)
 			if (result) {
-				sessionStorage.setItem('score', result.score)
-				sessionStorage.setItem('total', result.total)
-				location.href = '#/result'
+				if (result.error) {
+					throw new Error(result.error)
+				}
+				location.href = '#/result?id=' + this.routeParams.id
 			}
-		} else {
-			location.href = '#/'
+		} catch (error) {
+			console.log(error);
 		}
 	}
 }

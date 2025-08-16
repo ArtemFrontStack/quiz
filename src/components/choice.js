@@ -1,22 +1,46 @@
-import checkUserData from '../utils/url-manager.js'
+import config from '../../config/config.js'
+import { Auth } from '../services/auth.js'
+import { CustomHTTPResponse } from '../services/custom-http.js'
 
 export default class Choice {
 	constructor() {
 		this.quizzes = []
-		checkUserData();
-		const xhr = new XMLHttpRequest()
-		xhr.open('GET', `http://testologia.site/get-quizzes`, false)
-		xhr.send()
-		if (xhr.status === 200 && xhr.responseText) {
-			try {
-				this.quizzes = JSON.parse(xhr.responseText)
-			} catch (e) {
-				location.href = '#/'
+		this.init()
+		this.testResults = null
+	}
+
+	async init() {
+		try {
+			const result = await CustomHTTPResponse.request(config.host + '/tests')
+
+			if (result) {
+				if (result.error) {
+					throw new Error(result.error)
+				}
+				this.quizzes = result
 			}
-			this.processQuizzes()
-		} else {
-			location.href = '#/'
+		} catch (error) {
+			return console.error(error)
 		}
+
+		const userInfo = Auth.getUserInfo()
+		if (userInfo) {
+			try {
+				const result = await CustomHTTPResponse.request(
+					config.host + '/tests/results?userId=' + userInfo.userId
+				)
+
+				if (result) {
+					if (result.error) {
+						throw new Error(result.error)
+					}
+					this.testResults = result
+				}
+			} catch (error) {
+				return console.error(error)
+			}
+		}
+		this.processQuizzes()
 	}
 	processQuizzes() {
 		const choiceOptionsElement = document.getElementById('choice-options')
@@ -36,6 +60,14 @@ export default class Choice {
 				const choiceOptionArrowElement = document.createElement('div')
 				choiceOptionArrowElement.className = 'choice-option-arrow'
 
+				const result = this.testResults.find(item => item.testId === quiz.id)
+				if (result) {
+					const choiceOptionResultElement = document.createElement('div')
+					choiceOptionResultElement.className = 'choice-option-result'
+					choiceOptionResultElement.innerHTML = '<div>Результат</div><div>' +result.score + '/' + result.total +'</div>'
+					choiceOptionElement.appendChild(choiceOptionResultElement)
+				}
+
 				const choiceOptionArrowSvgElement = document.createElement('img')
 				choiceOptionArrowSvgElement.setAttribute(
 					'src',
@@ -44,6 +76,7 @@ export default class Choice {
 				choiceOptionArrowElement.appendChild(choiceOptionArrowSvgElement)
 				choiceOptionElement.appendChild(choiceOptionTextElement)
 				choiceOptionElement.appendChild(choiceOptionArrowElement)
+				
 
 				choiceOptionsElement.appendChild(choiceOptionElement)
 			})
@@ -52,8 +85,7 @@ export default class Choice {
 	chooseQuiz(element) {
 		const dataId = element.getAttribute('data-id')
 		if (dataId) {
-			sessionStorage.setItem('test-id', dataId)
-			location.href = '#/test'
+			location.href = '#/test?id=' + dataId
 		}
 	}
 }
